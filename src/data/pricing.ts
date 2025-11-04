@@ -1,0 +1,80 @@
+export const pricing = [
+  {
+    name: 'Cuci Komplit',
+    price: 'Rp 7.000',
+    features: ['Cuci + Lipat', 'Wangi Tahan Lama', 'Durasi 2–3 Hari'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Komplit (1 Hari)',
+    price: 'Rp 10.000',
+    features: ['Cuci + Setrika', 'Free Parfum Premium', 'Durasi 2 Hari'],
+    recommended: true,
+  },
+  {
+    name: 'Cuci Kering Express (6 Jam)',
+    price: 'Rp 15.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Lipat',
+    price: 'Rp 5.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Lipat (1 Hari)',
+    price: 'Rp 9.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Lipat Express(6 Jam)',
+    price: 'Rp 10.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Setrika Saja',
+    price: 'Rp 5.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Setrika Saja (1 Hari)',
+    price: 'Rp 7.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Basah Min. 10 Kg',
+    price: 'Rp 2.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Seprei Kecil/Besar',
+    price: 'Rp 10.000 / Rp 15.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Setrika Seprei, Selimut',
+    price: 'Rp 5.000 / pcs',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Cuci Gorden',
+    price: 'Rp 15.000 / kg',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+  {
+    name: 'Setrika Saja (6 Jam)',
+    price: 'Rp 10.000',
+    features: ['Selesai 24 Jam', 'Prioritas Antrian', 'Kualitas Premium'],
+    recommended: false,
+  },
+];
