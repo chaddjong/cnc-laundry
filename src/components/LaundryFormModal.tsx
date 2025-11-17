@@ -69,8 +69,9 @@ export default function LaundryFormModal({
 
     const payload = {
       ...formData,
+      pembayaran: formData.pembayaran.toLowerCase(), // konversi aman
       orderId: newOrderId,
-      status: 'Received', // default
+      status: 'Received',
     };
 
     try {
