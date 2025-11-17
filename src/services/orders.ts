@@ -19,10 +19,12 @@ export interface OrderData {
   deliveryDate: Date | null;
   deliveryTime: string;
   orderId: string;
-  status: string; // default: "pending"
-  note: string; // default: ""
-  imageUrl: string; // default: ""
-  beratLaundry: number;
+  status: string;
+  note: string;
+
+  imageUrl?: string; // optional
+  beratLaundry?: number; // optional
+
   pembayaran?: 'qris' | 'tunai' | 'transfer';
 }
 
