@@ -27,7 +27,7 @@ export default function TrackOrder() {
     'delivered',
   ];
 
-  const iconMap: Record<string, JSX.Element> = {
+  const iconMap: Record<string, React.ReactNode> = {
     received: <CheckCircle size={22} className="text-green-500" />,
     'picked up': <Truck size={22} className="text-green-500" />,
     washing: <CheckCircle size={22} className="text-blue-500" />,
