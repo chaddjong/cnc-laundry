@@ -1,10 +1,10 @@
 import React from 'react';
-// import Hero from '@/components/';
 import HowItWorks from '@/components/HowItWorks';
-import OrderForm from '@/components/OrderForm';
+// import OrderForm from '@/components/OrderForm';
 import Pricing from '@/components/Pricing';
 import TrackOrder from '@/components/TrackOrder';
 import Hero from '@/components/Hero';
+import MapsClient from '@/components/MapsClient';
 
 export default function HomePage() {
   return (
@@ -12,8 +12,8 @@ export default function HomePage() {
       <Hero />
       <HowItWorks />
       <Pricing />
-      <OrderForm />
       <TrackOrder />
+      <MapsClient />
     </div>
   );
 }

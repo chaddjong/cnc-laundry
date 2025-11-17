@@ -22,7 +22,7 @@ export default function Header() {
             />
           </div>
           <h2 className="text-lg md:text-xl font-bold text-gray-800">
-            Laundry Service
+            CNC Laundry Service
           </h2>
         </div>
 

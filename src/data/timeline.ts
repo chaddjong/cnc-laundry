@@ -1,5 +1,5 @@
 export const timeline = [
-  { title: 'Order Created', desc: 'Pesanan Anda telah diterima sistem.' },
+  { title: 'Received', desc: 'Pesanan Anda telah diterima sistem.' },
   { title: 'Picked Up', desc: 'Kurir telah menjemput pakaian Anda.' },
   { title: 'Washing', desc: 'Pakaian sedang dicuci dan dibersihkan.' },
   { title: 'Drying', desc: 'Pakaian sedang dikeringkan.' },

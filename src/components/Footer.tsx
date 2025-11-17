@@ -19,21 +19,21 @@ export default function Footer() {
               />
               <h3 className="font-semibold text-lg">CNC Laundry</h3>
             </div>
-            <p className="text-sm text-gray-600">Open Daily: 8 AM - 8 PM</p>
+            <p className="text-sm text-gray-600">Buka Setiap Hari: 8 AM - 8 PM</p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">Address</h3>
+            <h3 className="font-semibold text-lg mb-2">Alamat</h3>
             <p className="text-sm text-gray-600">
-              123 Clean St, Suite 100 <br />
-              Freshville, FS 12345
+              Laundry Agape Jl. Raya Manado-Bitung<br />
+              Minahasa Utara, 95371
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">Contact</h3>
+            <h3 className="font-semibold text-lg mb-2">Kontak</h3>
             <p className="text-sm text-gray-600">
-              Email: contact@laundry.com <br />
+              Email: cnc@laundry.com <br />
               Phone: (123) 456-7890
             </p>
           </div>
