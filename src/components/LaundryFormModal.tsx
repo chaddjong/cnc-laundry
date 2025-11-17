@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { pricing } from '@/data/pricing';
 import SuccessModal from './SuccessModal';
 import { createOrder } from '@/services/orders';
+import { OrderData } from '@/services/orders';
 
-// shadcn components (jika terpakai)
+// shadcn components
 import {
   Popover,
   PopoverContent,
@@ -32,7 +33,6 @@ export default function LaundryFormModal({
   onClose,
   selectedService,
 }: LaundryFormModalProps) {
-  // jika modal tidak dibuka, komponen akan unmount jadi initializer ini dipakai setiap mount
   const [formData, setFormData] = useState(() => ({
     name: '',
     phone: '',
@@ -40,20 +40,32 @@ export default function LaundryFormModal({
     serviceType: selectedService || (pricing[0]?.name ?? ''),
     deliveryDate: null as Date | null,
     deliveryTime: '',
-    pickupMethod: 'Pickup', // default
-    note: '',
-    pembayaran: 'QRIS',
+    pickupMethod: 'Pickup',
+    pembayaran: 'qris', // harus lowercase karena union type
+    beratLaundry: '', // input string dulu → convert saat submit
   }));
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderId, setOrderId] = useState('');
 
-  if (!isOpen) return null; // unmount saat ditutup — memastikan inisialisasi ulang saat dibuka
+  if (!isOpen) return null;
+
+  // replaces comma with dot in beratLaundry
+  const handleBeratChange = (value: string) => {
+    const normalized = value.replace(',', '.');
+    setFormData((prev) => ({ ...prev, beratLaundry: normalized }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
+    if (name === 'beratLaundry') {
+      handleBeratChange(value);
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -67,11 +79,24 @@ export default function LaundryFormModal({
     const newOrderId = generateOrderId();
     setOrderId(newOrderId);
 
-    const payload = {
-      ...formData,
-      pembayaran: formData.pembayaran.toLowerCase(), // konversi aman
+    const beratNumber =
+      formData.beratLaundry.trim() === ''
+        ? null
+        : Number(formData.beratLaundry);
+
+    const payload: OrderData = {
       orderId: newOrderId,
-      status: 'Received',
+      name: formData.name,
+      phone: formData.phone,
+      address: formData.address,
+      serviceType: formData.serviceType,
+      deliveryDate: formData.deliveryDate,
+      deliveryTime: formData.deliveryTime,
+      status: 'pending',
+      note: '',
+      pembayaran: formData.pembayaran as 'qris' | 'tunai' | 'transfer',
+      imageUrl: '',
+      beratLaundry: beratNumber ?? undefined,
     };
 
     try {
@@ -87,16 +112,12 @@ export default function LaundryFormModal({
   const closeSuccessModal = () => {
     setShowSuccess(false);
     onClose();
-    // tidak perlu reset manual karena saat modal ditutup komponen unmount → next mount akan inisialisasi ulang
   };
 
   return (
     <>
-      {/* MAIN FORM */}
       <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center p-4 overflow-y-auto">
-        {/* MODAL BOX */}
         <div className="bg-white rounded-2xl shadow-lg w-full max-w-md relative max-h-[90vh] flex flex-col">
-          {/* CLOSE BUTTON */}
           <button
             onClick={onClose}
             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl z-10"
@@ -104,12 +125,10 @@ export default function LaundryFormModal({
             ✕
           </button>
 
-          {/* HEADER */}
           <h3 className="text-xl font-semibold text-center p-5 pb-3">
             Form Pemesanan Laundry
           </h3>
 
-          {/* FORM (scrollable) */}
           <form
             onSubmit={handleSubmit}
             className="px-6 pb-6 space-y-4 overflow-y-auto"
@@ -155,6 +174,24 @@ export default function LaundryFormModal({
               />
             </div>
 
+            {/* Berat Laundry */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Berat Laundry (kg)
+              </label>
+              <input
+                type="text"
+                name="beratLaundry"
+                placeholder="7.22"
+                value={formData.beratLaundry}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Gunakan koma atau titik — otomatis menjadi titik.
+              </p>
+            </div>
+
             {/* Jenis Layanan */}
             <div>
               <label className="block text-sm font-medium mb-1">
@@ -176,7 +213,7 @@ export default function LaundryFormModal({
 
             {/* Pickup Method */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium mb-1">
                 Metode Pengambilan
               </label>
               <select
@@ -197,7 +234,7 @@ export default function LaundryFormModal({
               </label>
               <select
                 name="pembayaran"
-                value={formData.pembayaran || ''}
+                value={formData.pembayaran}
                 onChange={handleChange}
                 className="w-full border p-2 rounded-lg"
                 required
@@ -248,7 +285,6 @@ export default function LaundryFormModal({
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg py-2"
