@@ -24,8 +24,13 @@ export interface OrderData {
 
   imageUrl?: string; // optional
   beratLaundry?: number; // optional
+  buktiBayar?: string;
 
-  pembayaran?: 'qris' | 'tunai' | 'transfer';
+  pembayaran?: 'QRIS' | 'Tunai' | 'Transfer Va';
+
+  qr_url?: string;
+  qr_string?: string;
+  payment_link_url?: string;
 }
 
 // =====================
@@ -34,11 +39,16 @@ export interface OrderData {
 export async function createOrder(data: OrderData) {
   const docRef = await addDoc(collection(db, 'orders'), {
     ...data,
-
     status: data.status ?? 'pending',
     note: data.note ?? '',
     imageUrl: data.imageUrl ?? '',
-    beratLaundry: data.beratLaundry ?? null, // <<< NEW
+    beratLaundry: data.beratLaundry ?? null,
+    buktiBayar: data.buktiBayar ?? null,
+
+    // Tambahkan payment_link_url di sini
+    payment_link_url: data.payment_link_url ?? null,
+    qr_url: data.qr_url ?? null,
+    qr_string: data.qr_string ?? null,
 
     createdAt: Timestamp.now(),
   });
@@ -62,6 +72,7 @@ export const listenOrders = (callback: (orders: any[]) => void) => {
         imageUrl: d.imageUrl ?? '',
         status: d.status ?? 'pending',
         beratLaundry: d.beratLaundry ?? null, // <<< NEW
+        buktiBayar: d.buktiBayar ?? null,
 
         deliveryDate:
           d.deliveryDate instanceof Timestamp
@@ -117,12 +128,13 @@ export async function getOrderById(orderId: string) {
   return {
     id: docSnap.id,
     ...d,
-
     note: d.note ?? '',
     price: d.price ?? '',
     imageUrl: d.imageUrl ?? '',
     status: d.status ?? 'pending',
-    beratLaundry: d.beratLaundry ?? null, // <<< NEW
+    beratLaundry: d.beratLaundry ?? null,
+    payment_link_url: d.payment_link_url ?? null, // <<< tambahkan ini
+    buktiBayar: d.buktiBayar ?? null,
 
     deliveryDate:
       d.deliveryDate instanceof Timestamp

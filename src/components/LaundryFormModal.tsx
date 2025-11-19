@@ -23,7 +23,7 @@ interface LaundryFormModalProps {
 }
 
 function generateOrderId() {
-  const prefix = 'A';
+  const prefix = 'B';
   const random = Math.floor(1000 + Math.random() * 9000);
   return `${prefix}${random}`;
 }
@@ -94,7 +94,7 @@ export default function LaundryFormModal({
       deliveryTime: formData.deliveryTime,
       status: 'pending',
       note: '',
-      pembayaran: formData.pembayaran as 'qris' | 'tunai' | 'transfer',
+      pembayaran: formData.pembayaran as 'QRIS' | 'Tunai' | 'Transfer Va',
       imageUrl: '',
       beratLaundry: beratNumber ?? undefined,
     };
@@ -175,7 +175,7 @@ export default function LaundryFormModal({
             </div>
 
             {/* Berat Laundry */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-1">
                 Berat Laundry (kg)
               </label>
@@ -190,7 +190,7 @@ export default function LaundryFormModal({
               <p className="text-xs text-gray-500 mt-1">
                 Gunakan koma atau titik — otomatis menjadi titik.
               </p>
-            </div>
+            </div> */}
 
             {/* Jenis Layanan */}
             <div>

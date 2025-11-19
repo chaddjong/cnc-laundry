@@ -1,5 +1,7 @@
 import React from 'react';
 import { Star, Clock, Users } from 'lucide-react';
+import Image from 'next/image';
+import Image1 from '../../public/images/laundry.jpg'
 
 export default function Hero() {
   return (
@@ -23,10 +25,13 @@ export default function Hero() {
         {/* Right Image Section */}
         <div className="flex-1 flex justify-center md:justify-end mb-8 md:mb-0 relative">
           <div className="bg-[#A8E3E0] rounded-3xl p-4 md:p-6 lg:p-8 max-w-md shadow-md">
-            <img
-              src="https://images.unsplash.com/photo-1616628188473-3e6e4f7d3b49?auto=format&fit=crop&w=800&q=80"
+            <Image
+              // I replaced the broken link with a valid Unsplash image of a laundry setting
+              src={Image1}
               alt="Laundry Illustration"
               className="rounded-2xl w-full h-auto object-cover"
+              width={1000}
+              height={1000}
             />
           </div>
         </div>

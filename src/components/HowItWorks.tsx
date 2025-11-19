@@ -1,6 +1,10 @@
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
 import { steps } from '@/data/steps';
+import Image from 'next/image';
+import Laundry1 from '../../public/images/helo.jpg';
+import Laundry2 from '../../public/images/laundr2.jpg';
+import Laundry3 from '../../public/images/Laundry3.jpeg';
 
 export default function HowItWorks() {
   return (
@@ -18,8 +22,8 @@ export default function HowItWorks() {
 
           {/* Top image */}
           <div className="rounded-2xl overflow-hidden mb-6 shadow-lg">
-            <img
-              src="https://images.unsplash.com/photo-1616628188473-3e6e4f7d3b49?auto=format&fit=crop&w=800&q=80"
+            <Image
+              src={Laundry1}
               alt="Laundry staff smiling"
               className="w-full h-auto object-cover"
             />
@@ -27,24 +31,20 @@ export default function HowItWorks() {
 
           {/* Bottom row (image + play video box) */}
           <div className="flex gap-6 w-full">
-            <div className="flex-1 rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1581579186988-c70d6f2a4c1b?auto=format&fit=crop&w=800&q=80"
+            <div className="flex-1 h-full rounded-2xl overflow-hidden shadow-lg">
+              <Image
+                src={Laundry2}
                 alt="Laundry process"
                 className="w-full h-auto object-cover"
               />
             </div>
 
-            <div className="bg-[#00A7A7] text-white rounded-xl p-6 flex flex-col items-center justify-center shadow-md flex-1">
-              <button className="bg-white text-[#FF8A34] rounded-full w-14 h-14 flex items-center justify-center mb-3">
-                <span className="material-symbols-outlined text-3xl">
-                  play_arrow
-                </span>
-              </button>
-              <h3 className="font-semibold text-lg">Play Video</h3>
-              <p className="text-sm text-white/80 mt-2 text-center">
-                Lorem ipsum dolor sit amet consectetur adipiscing.
-              </p>
+            <div className="bg-[#00A7A7] text-white rounded-xl p-2 flex flex-col items-center justify-center shadow-md flex-1">
+              <Image
+                src={Laundry3}
+                alt="Laundry process"
+                className="w-full h-auto object-cover"
+              />
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ export type OrderRecord = {
 
 const statusOptions = [
   'received',
-  'picked up',
+  'payment process',
   'washing',
   'drying',
   'ready for delivery',
@@ -37,7 +37,7 @@ const statusOptions = [
 
 const statusColorMap: Record<string, string> = {
   received: 'bg-gray-400',
-  'picked up': 'bg-blue-400',
+  'payment process': 'bg-blue-400',
   washing: 'bg-yellow-400',
   drying: 'bg-orange-400',
   'ready for delivery': 'bg-green-400',
@@ -200,6 +200,33 @@ export default function AdminPage() {
         updatePayload.imageUrl = imageUrl;
       }
 
+      if (
+        ['qris', 'transfer'].includes(form.pembayaran) &&
+        form.status === 'payment process'
+      ) {
+        const res = await fetch('/api/create-qris', {
+          method: 'POST',
+          body: JSON.stringify({
+            orderId: selectedOrder.orderId,
+            amount: normalizedPrice,
+            customer: {
+              first_name: selectedOrder.customerName,
+              email: selectedOrder.customerEmail,
+              phone: selectedOrder.customerPhone,
+            },
+          }),
+        });
+
+        const data = await res.json();
+
+        const updatePayloadPayment: any = {};
+        updatePayloadPayment.payment_link_url = data.payment_link_url; // <<< ambil dari payment_url
+        updatePayloadPayment.qr_url = data.qr_url;
+
+        // Simpan ke Firestore
+        await updateOrder(selectedOrder.id, updatePayloadPayment);
+      }
+
       await updateOrder(selectedOrder.id, updatePayload);
       closePanel();
     } catch (err) {
@@ -271,6 +298,17 @@ export default function AdminPage() {
                   ? formatNumber(String(order.price))
                   : '-'}
               </p>
+
+              {/* === Bukti Pembayaran Image === */}
+              {order.buktiBayar && (
+                <Image
+                  src={order.buktiBayar}
+                  alt="Bukti pembayaran"
+                  className="w-full h-32 object-cover rounded-lg border mt-3"
+                  width={300}
+                  height={300}
+                />
+              )}
 
               <button
                 onClick={() => openPanel(order)}
@@ -353,8 +391,8 @@ export default function AdminPage() {
                   onChange={(e) => handleChange('pickupMethod', e.target.value)}
                   className="w-full border rounded-lg px-3 py-2 mt-1"
                 >
-                  <option value="home">Ambil di rumah</option>
-                  <option value="store">Antar ke laundry</option>
+                  <option value="Ambil Di Rumah">Ambil di rumah</option>
+                  <option value="Antar Ke Laundry">Antar ke laundry</option>
                 </select>
               </div>
 

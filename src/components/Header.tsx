@@ -44,10 +44,12 @@ export default function Header() {
           </nav>
 
           <a
-            href="#order-form"
+            href="https://wa.me/6289633044123"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full h-10 px-6 bg-green-300 hover:bg-green-400 text-gray-800 font-semibold flex items-center transition"
           >
-            Laundry Now
+            0896-3304-4123
           </a>
         </div>
 
