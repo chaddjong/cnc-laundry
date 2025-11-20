@@ -60,6 +60,8 @@ export default function AdminPage() {
   const [weightInput, setWeightInput] = useState<string>('');
   const [weightValue, setWeightValue] = useState<number | null>(null);
 
+  const [searchOrderId, setSearchOrderId] = useState<string>('');
+
   const [form, setForm] = useState({
     name: '',
     address: '',
@@ -89,6 +91,11 @@ export default function AdminPage() {
   const filteredOrders = orders
     .filter((order) => {
       if (filterStatus !== 'all' && order.status !== filterStatus) return false;
+      if (
+        searchOrderId &&
+        !order.orderId?.toLowerCase().includes(searchOrderId.toLowerCase())
+      )
+        return false;
       return true;
     })
     .sort((a, b) => {
@@ -257,6 +264,14 @@ export default function AdminPage() {
               </option>
             ))}
           </select>
+
+          <input
+            type="text"
+            placeholder="Search by Order ID"
+            value={searchOrderId}
+            onChange={(e) => setSearchOrderId(e.target.value)}
+            className="border rounded-lg px-3 py-2 text-sm"
+          />
 
           <div className="flex gap-2 mt-2 sm:mt-0">
             <button
