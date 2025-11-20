@@ -55,7 +55,9 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         transaction_details: { order_id: orderId, gross_amount: amount },
         customer_details: customerDetails,
-        enabled_payments: ['qris', 'gopay', 'shopeepay', 'bank_transfer'],
+        preference: {
+          enabled_payments: ['qris', 'gopay', 'shopeepay', 'bank_transfer'],
+        },
       }),
     });
 

@@ -20,6 +20,7 @@ export interface OrderData {
   deliveryTime: string;
   orderId: string;
   status: string;
+  pickupMethod: string;
   note: string;
 
   imageUrl?: string; // optional
@@ -39,6 +40,7 @@ export interface OrderData {
 export async function createOrder(data: OrderData) {
   const docRef = await addDoc(collection(db, 'orders'), {
     ...data,
+    pickupMethod: data.pickupMethod ?? '',
     status: data.status ?? 'pending',
     note: data.note ?? '',
     imageUrl: data.imageUrl ?? '',
@@ -73,6 +75,7 @@ export const listenOrders = (callback: (orders: any[]) => void) => {
         status: d.status ?? 'pending',
         beratLaundry: d.beratLaundry ?? null, // <<< NEW
         buktiBayar: d.buktiBayar ?? null,
+        pickupMethod: d.pickupMethod ?? '',
 
         deliveryDate:
           d.deliveryDate instanceof Timestamp
@@ -135,6 +138,7 @@ export async function getOrderById(orderId: string) {
     beratLaundry: d.beratLaundry ?? null,
     payment_link_url: d.payment_link_url ?? null, // <<< tambahkan ini
     buktiBayar: d.buktiBayar ?? null,
+    pickupMethod: d.pickupMethod ?? '',
 
     deliveryDate:
       d.deliveryDate instanceof Timestamp

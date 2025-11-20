@@ -391,8 +391,8 @@ export default function AdminPage() {
                   onChange={(e) => handleChange('pickupMethod', e.target.value)}
                   className="w-full border rounded-lg px-3 py-2 mt-1"
                 >
-                  <option value="Ambil Di Rumah">Ambil di rumah</option>
-                  <option value="Antar Ke Laundry">Antar ke laundry</option>
+                  <option value="Ambil di rumah">Ambil di rumah</option>
+                  <option value="Antar ke Laundry">Antar ke laundry</option>
                 </select>
               </div>
 

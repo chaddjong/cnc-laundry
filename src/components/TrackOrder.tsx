@@ -153,6 +153,14 @@ export default function TrackOrder() {
                     <span className="font-medium">Payment Method</span>{' '}
                     <span className="float-right">{order.pembayaran}</span>
                   </p>
+
+                  <p>
+                    <span className="font-medium">Berat Laundry</span>{' '}
+                    <span className="float-right">
+                      {order.beratLaundry ? `${order.beratLaundry} kg` : '-'}
+                    </span>
+                  </p>
+
                   <p>
                     <span className="font-medium">Price</span>{' '}
                     <span className="float-right">

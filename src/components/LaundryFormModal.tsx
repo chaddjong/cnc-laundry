@@ -40,7 +40,7 @@ export default function LaundryFormModal({
     serviceType: selectedService || (pricing[0]?.name ?? ''),
     deliveryDate: null as Date | null,
     deliveryTime: '',
-    pickupMethod: 'Pickup',
+    pickupMethod: 'Ambil di rumah',
     pembayaran: 'qris', // harus lowercase karena union type
     beratLaundry: '', // input string dulu → convert saat submit
   }));
@@ -92,6 +92,7 @@ export default function LaundryFormModal({
       serviceType: formData.serviceType,
       deliveryDate: formData.deliveryDate,
       deliveryTime: formData.deliveryTime,
+      pickupMethod: formData.pickupMethod,
       status: 'pending',
       note: '',
       pembayaran: formData.pembayaran as 'QRIS' | 'Tunai' | 'Transfer Va',
@@ -222,8 +223,8 @@ export default function LaundryFormModal({
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2"
               >
-                <option value="Pickup">Dijemput Kurir</option>
-                <option value="Drop-off">Antar ke Laundry</option>
+                <option value="Ambil di rumah">Ambil di rumah</option>
+                <option value="Antar ke Laundry">Antar ke laundry</option>
               </select>
             </div>
 
@@ -239,9 +240,9 @@ export default function LaundryFormModal({
                 className="w-full border p-2 rounded-lg"
                 required
               >
-                <option value="qris">QRIS</option>
-                <option value="tunai">Tunai</option>
-                <option value="transfer">Transfer</option>
+                <option value="QRIS">QRIS</option>
+                <option value="Tunai">Tunai</option>
+                <option value="Transfer">Transfer</option>
               </select>
             </div>
 
