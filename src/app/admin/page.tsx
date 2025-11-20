@@ -27,6 +27,7 @@ export type OrderRecord = {
 } & Record<string, any>;
 
 const statusOptions = [
+  'pending',
   'received',
   'payment process',
   'washing',
@@ -56,8 +57,8 @@ export default function AdminPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
 
-  const [weightInput, setWeightInput] = useState<string>(''); // tampilan input
-  const [weightValue, setWeightValue] = useState<number | null>(null); // nilai numerik untuk update
+  const [weightInput, setWeightInput] = useState<string>('');
+  const [weightValue, setWeightValue] = useState<number | null>(null);
 
   const [form, setForm] = useState({
     name: '',
@@ -73,13 +74,29 @@ export default function AdminPage() {
     imageFile: null as File | null,
   });
 
+  // ===== FILTER STATE =====
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [dateSort, setDateSort] = useState<'asc' | 'desc' | null>(null);
+
   useEffect(() => {
     const unsub = listenOrders((data) => {
       setOrders(data as OrderRecord[]);
     });
-
     return () => unsub();
   }, []);
+
+  // ===== Filtered & Sorted Orders =====
+  const filteredOrders = orders
+    .filter((order) => {
+      if (filterStatus !== 'all' && order.status !== filterStatus) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      if (!dateSort) return 0;
+      const dateA = a.deliveryDate ? new Date(a.deliveryDate).getTime() : 0;
+      const dateB = b.deliveryDate ? new Date(b.deliveryDate).getTime() : 0;
+      return dateSort === 'asc' ? dateA - dateB : dateB - dateA;
+    });
 
   const openPanel = (order: OrderRecord) => {
     setSelectedOrder(order);
@@ -110,7 +127,6 @@ export default function AdminPage() {
     setTimeout(() => {
       setIsPanelOpen(false);
       setSelectedOrder(null);
-
       setForm({
         name: '',
         address: '',
@@ -140,24 +156,11 @@ export default function AdminPage() {
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-
-    // izinkan angka + koma/titik
     value = value.replace(/[^0-9.,]/g, '');
-
-    // langsung tampilkan ke input (string)
     setWeightInput(value);
-
-    // replace koma → titik untuk parsing
     const normalized = value.replace(',', '.');
-
     const num = parseFloat(normalized);
-
-    // kalau valid number → simpan as number
-    if (!isNaN(num)) {
-      setWeightValue(num);
-    } else {
-      setWeightValue(null);
-    }
+    setWeightValue(!isNaN(num) ? num : null);
   };
 
   const saveChanges = async () => {
@@ -179,8 +182,6 @@ export default function AdminPage() {
       note: form.note,
       pembayaran: form.pembayaran || null,
       ...(normalizedPrice !== null ? { price: normalizedPrice } : {}),
-
-      // ⬇️ Tambahkan ini:
       ...(weightValue !== null ? { beratLaundry: weightValue } : {}),
     };
 
@@ -239,12 +240,47 @@ export default function AdminPage() {
     <div className="w-full mx-auto py-10 lg:px-10 px-4 relative">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4">
         <h2 className="text-xl font-semibold">Orders</h2>
+
+        {/* FILTERS */}
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border rounded-lg px-3 py-2 text-sm"
+          >
+            <option value="all">All Status</option>
+            {statusOptions.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+
+          <div className="flex gap-2 mt-2 sm:mt-0">
+            <button
+              className={`px-3 py-2 rounded-lg border ${
+                dateSort === 'asc' ? 'bg-blue-600 text-white' : ''
+              }`}
+              onClick={() => setDateSort('asc')}
+            >
+              Ascending
+            </button>
+            <button
+              className={`px-3 py-2 rounded-lg border ${
+                dateSort === 'desc' ? 'bg-blue-600 text-white' : ''
+              }`}
+              onClick={() => setDateSort('desc')}
+            >
+              Descending
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {orders.map((order) => {
+        {filteredOrders.map((order) => {
           const status = (order.status || '').toLowerCase();
           const colorClass = statusColorMap[status] || 'bg-gray-400';
 
@@ -257,7 +293,6 @@ export default function AdminPage() {
                 <span className="text-sm text-gray-500">
                   {order.orderId || order.id}
                 </span>
-
                 <span
                   className={`text-xs text-white px-3 py-1 rounded-full ${colorClass}`}
                 >
@@ -299,7 +334,6 @@ export default function AdminPage() {
                   : '-'}
               </p>
 
-              {/* === Bukti Pembayaran Image === */}
               {order.buktiBayar && (
                 <Image
                   src={order.buktiBayar}
@@ -321,6 +355,7 @@ export default function AdminPage() {
         })}
       </div>
 
+      {/* PANEL UPDATE ORDER */}
       {isPanelOpen && (
         <>
           <div
@@ -329,7 +364,7 @@ export default function AdminPage() {
               panelVisible ? 'opacity-100' : 'opacity-0'
             }`}
           />
-
+          {/* ------------------------------------------------------------------------------------------- */}
           <div
             className={`fixed inset-y-0 right-0 w-full sm:w-[420px] bg-white shadow-xl z-50 p-6 overflow-y-auto transform transition-transform duration-300 ${
               panelVisible ? 'translate-x-0' : 'translate-x-full'
